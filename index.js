@@ -22,7 +22,6 @@ const todoList = () => {
   
     const toDisplayableList = (list) => {
       return list.map(items => `${items.completed ? "[x]" : "[ ]"} ${items.title} ${items.dueDate === today ? "" : items.dueDate}`).join("\n");
-     
     }
   
     return { all, add, markAsComplete, overdue, dueToday, dueLater, toDisplayableList };
