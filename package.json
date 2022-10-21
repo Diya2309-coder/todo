@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "prepare": "husky install",
-    "start":"node todo.js"
+    "start": "node todo.js"
   },
   "lint-staged": {
     "*.js": [

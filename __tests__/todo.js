@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const todoList = require("../todo");
 
-const { all, markAsComplete, add } = todoList();
+const { all, markAsComplete, add, overdue } = todoList();
 
 describe("todolist test suite", () => {
   beforeAll(() => {
@@ -28,5 +28,12 @@ describe("todolist test suite", () => {
     expect(all[0].completed).toBe(true);
   });
 
-  // });
+  test("retrieval of overdue items", () => {
+    let todo = overdue();
+    expect(
+      todo.every((items) => {
+        return items.dueDate < today;
+      })
+    ).toBe(true);
+  });
 });
