@@ -1,58 +1,22 @@
 /* eslint-disable no-undef */
-const todoList = require("../todo");
+const db = require("../models");
 
-const { all, markAsComplete, add, overdue, dueToday, dueLater, today } =
-  todoList();
+// const { all, markAsComplete, add, overdue, dueToday, dueLater, today } =
+//   todoList();
 
 describe("todolist test suite", () => {
-  beforeAll(() => {
-    add({
-      title: "test todo",
+  beforeAll(async () => {
+    await db.sequelize.sync({ force: true });
+  });
+
+  test("should add new todo", async () => {
+    const todoItemsCount = await db.Todo.count();
+    await db.Todo.addTask({
+      title: "Test todo",
       completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
+      dueDate: new Date(),
     });
-  });
-
-  test("should add new todo", () => {
-    const todoItemCount = all.length;
-    add({
-      title: "test todo",
-      completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
-    });
-    expect(all.length).toBe(todoItemCount + 1);
-  });
-
-  test("should mark as complet", () => {
-    expect(all[0].completed).toBe(false);
-    markAsComplete(0);
-    expect(all[0].completed).toBe(true);
-  });
-
-  test("retrieval of overdue items", () => {
-    let todo = overdue();
-    expect(
-      todo.every((items) => {
-        return items.dueDate < today;
-      })
-    ).toBe(true);
-  });
-
-  test("retrieval of due today items", () => {
-    let todo = dueToday();
-    expect(
-      todo.every((items) => {
-        return items.dueDate === new Date().toLocaleDateString("en-CA");
-      })
-    ).toBe(true);
-  });
-
-  test("retrieval of due later items", () => {
-    let todo = dueLater();
-    expect(
-      todo.every((items) => {
-        return items.dueDate > today;
-      })
-    ).toBe(true);
+    const newTodoItemsCount = await db.Todo.count();
+    expect(newTodoItemsCount).toBe(todoItemsCount + 1);
   });
 });
